@@ -1,0 +1,134 @@
+// Copyright 2019 Authors of ActiveIOT
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http:#www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+
+package activeiot.thing.v1;
+
+option csharp_namespace = "Activeiot.Thing.V1";
+option go_package = "thingv1";
+option java_multiple_files = true;
+option java_outer_classname = "ThingApiProto";
+option java_package = "com.activeiot.thing.v1";
+option objc_class_prefix = "ATX";
+option php_namespace = "Activeiot\\Thing\\V1";
+
+import "api/proto/core/v1/get_options.proto";
+import "api/proto/core/v1/list_options.proto";
+import "api/proto/core/v1/update_options.proto";
+import "api/proto/thing/v1/thing.proto";
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-swagger/options/annotations.proto";
+
+// ThingAPI ...
+service ThingAPI {
+  // CreateThing ...
+  rpc CreateThing(CreateThingRequest) returns (CreateThingResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/things"
+      body: "*"
+    };
+  }
+  // ListThings ...
+  rpc ListThings(ListThingsRequest) returns (ListThingsResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/things"
+    };
+  }
+  // GetThing ...
+  rpc GetThing(GetThingRequest) returns (GetThingResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/things/{id}"
+    };
+  }
+  // UpdateThing ...
+  rpc UpdateThing(UpdateThingRequest) returns (UpdateThingResponse) {
+    option (google.api.http) = {
+      put: "/api/v1/things/{thing.id}"
+      body: "*"
+    };
+  }
+  // DeleteThing ...
+  rpc DeleteThing(DeleteThingRequest) returns (DeleteThingResponse) {
+    option (google.api.http) = {
+      delete: "/api/v1/things/{id}"
+    };
+  }
+}
+
+// CreateThingRequest ...
+// @param thing - object to create
+message CreateThingRequest {
+  activeiot.thing.v1.Thing thing = 1;
+}
+
+// CreateThingResponse ...
+// @param thing - created object
+message CreateThingResponse {
+  activeiot.thing.v1.Thing thing = 1;
+}
+
+// ListThingsRequest ...
+// @param list_options - additional list options
+message ListThingsRequest {
+  activeiot.core.v1.ListOptions options = 1;
+}
+
+// ListThingsResponse ...
+// @param things - list of objects
+// @param count - amount of results ignoring limit
+message ListThingsResponse {
+  repeated activeiot.thing.v1.Thing things = 1;
+  int64 count = 2;
+}
+
+// GetThingRequest ...
+// @param id - id of thing to get
+// @param get_options - additional get options
+message GetThingRequest {
+  string id = 1 [(gogoproto.customname) = "ID"];
+  activeiot.core.v1.GetOptions options = 2;
+}
+
+// GetThingResponse ...
+// @param thing - requested object
+message GetThingResponse {
+  activeiot.thing.v1.Thing thing = 1;
+}
+
+// UpdateThingRequest ...
+// @param thing - object data to update
+// @param update_options - additional update options
+message UpdateThingRequest {
+  activeiot.thing.v1.Thing thing = 1;
+  activeiot.core.v1.UpdateOptions options = 2;
+}
+
+// UpdateThingResponse ...
+// @param thing - updated object
+message UpdateThingResponse {
+  activeiot.thing.v1.Thing thing = 1;
+}
+
+// DeleteThingRequest ...
+// @param id - id of object to delete
+// @param hard - should we do a hard delete? by default we do a soft delete
+message DeleteThingRequest {
+  string id = 1 [(gogoproto.customname) = "ID"];
+  bool hard = 2;
+}
+
+// DeleteThingResponse ...
+message DeleteThingResponse {}
